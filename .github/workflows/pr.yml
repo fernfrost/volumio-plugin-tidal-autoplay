@@ -1,0 +1,20 @@
+name: Pull request
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test_formatting:
+    name: Test formatting
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install node modules
+        run: npm install
+
+      - name: Test formatting
+        run: npm test
