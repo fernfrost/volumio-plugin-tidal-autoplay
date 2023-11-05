@@ -15,7 +15,7 @@
       },
       "saveButton": {
         "label": "TRANSLATE.TIDAL_AUTOPLAY.SAVE",
-        "data": ["mixId"]
+        "data": ["mixId", "startOnSave"]
       },
       "content": [
         {
@@ -25,6 +25,13 @@
           "doc": "TRANSLATE.TIDAL_AUTOPLAY.MIX_ID_DOC",
           "label": "TRANSLATE.TIDAL_AUTOPLAY.MIX_ID_LABEL",
           "value": ""
+        },
+        {
+          "id": "startOnSave",
+          "element": "switch",
+          "label": "TRANSLATE.TIDAL_AUTOPLAY.START_ON_SAVE_LABEL",
+          "description": "TRANSLATE.TIDAL_AUTOPLAY.START_ON_SAVE_DESCRIPTION",
+          "value": true
         }
       ]
     }
