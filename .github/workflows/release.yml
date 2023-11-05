@@ -1,0 +1,38 @@
+name: Release
+
+on:
+  workflow_dispatch:
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    container: jbonjean/volumio:latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Increment semantic version
+        id: version
+        uses: paulhatch/semantic-version@v5.3.0
+
+      - name: Update plugin version
+        run: npm version ${{ steps.version.outputs.version }} --git-tag-version false --allow-same-version
+
+      - name: Install node modules
+        run: npm install --production
+
+      - name: Package plugin
+        run: volumio plugin package
+
+      - name: Create release
+        uses: ncipollo/release-action@v1.13.0
+        with:
+          artifactErrorsFailBuild: true
+          artifacts: ./tidal_autoplay.zip
+          artifactContentType: raw
+          omitBody: true
+          skipIfReleaseExists: true
+          tag: ${{ steps.version.outputs.version_tag }}
