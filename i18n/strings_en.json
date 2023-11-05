@@ -1,5 +1,6 @@
 {
   "TIDAL_AUTOPLAY": {
+    "CONFIGURATION_UPDATE_ERROR": "Unable to play Tidal mix. Make sure to use a valid mix id.",
     "MIX_ID_DOC": "The unique id of the Tidal mix",
     "MIX_ID_LABEL": "Mix Id",
     "PAGE_LABEL": "Tidal Autoplay Configuration",
