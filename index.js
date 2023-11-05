@@ -41,7 +41,7 @@ tidalAutoplay.prototype.onStart = function () {
           self.commandRouter.volumioClearQueue();
           self.commandRouter.addQueueItems(tracks).then(() => {
             self.socket.on("pushBackendEventsStatus", function (data) {
-              self.socket.emit("play");
+              self.commandRouter.volumioPlay(0);
               self.socket.removeAllListeners();
             });
           });
@@ -90,6 +90,7 @@ tidalAutoplay.prototype.getUIConfig = function () {
     )
     .then(function (uiconf) {
       uiconf.sections[0].content[0].value = self.config.get("mixId");
+      uiconf.sections[0].content[1].value = self.config.get("startOnSave");
 
       defer.resolve(uiconf);
     })
@@ -107,7 +108,22 @@ tidalAutoplay.prototype.getConfigurationFiles = function () {
 tidalAutoplay.prototype.setUIConfig = function (data) {
   var self = this;
 
+  var mixId = data["mixId"];
+  var startOnSave = data["startOnSave"];
+
   self.config.set("mixId", data["mixId"]);
+  self.config.set("startOnSave", startOnSave);
+
+  if (startOnSave) {
+    self.commandRouter
+      .explodeUriFromService("tidal", "tidal://mymusic/mixes/" + mixId)
+      .then((tracks) => {
+        self.commandRouter.volumioClearQueue();
+        self.commandRouter.addQueueItems(tracks).then(() => {
+          self.commandRouter.volumioPlay(0);
+        });
+      });
+  }
 
   self.commandRouter.pushToastMessage(
     "success",
